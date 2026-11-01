@@ -144,7 +144,7 @@
 
         <!-- RESULTS -->
         <section id="results" class="hidden">
-
+        
             <h2 class="section-heading">
                 Intelligence Dashboard
             </h2>
@@ -347,15 +347,73 @@
             </div>
 
             <!-- FINAL DECISION -->
-            <div class="decision">
+        
+<!-- FINAL DECISION -->
 
-                <p>FINAL SYSTEM DECISION</p>
+<!-- FINAL DECISION -->
+<div class="decision">
+    <p>FINAL SYSTEM DECISION</p>
+    <h2 id="finalDecision">--</h2>
+</div>
 
-                <h2 id="finalDecision">--</h2>
+<!-- FLOOD EMERGENCY ACTION PLANNER -->
+<section class="panel emergency-planner" id="emergencyPlanner">
 
-            </div>
+    <h2>🚨 Flood Emergency Action Planner</h2>
 
-        </section>
+    <p>
+        Preparedness checklist based on the predicted flood-risk level.
+    </p>
+
+    <div class="emergency-risk" id="emergencyRisk">
+        Complete flood analysis to generate your action plan.
+    </div>
+
+    <div class="emergency-stage">
+        <h3>🟢 Before the Flood</h3>
+        <label><input type="checkbox"> Prepare an emergency kit with food, water and medicines.</label>
+        <label><input type="checkbox"> Charge your phone and power bank.</label>
+        <label><input type="checkbox"> Keep important documents in waterproof covers.</label>
+        <label><input type="checkbox"> Identify higher ground and official evacuation locations.</label>
+    </div>
+
+    <div class="emergency-stage">
+        <h3>🔴 During the Flood</h3>
+        <label><input type="checkbox"> Follow official alerts and evacuation instructions.</label>
+        <label><input type="checkbox"> Stay away from floodwater and electrical wires.</label>
+        <label><input type="checkbox"> Never walk or drive through moving floodwater.</label>
+        <label><input type="checkbox"> Contact emergency services if you need rescue.</label>
+    </div>
+
+    <div class="emergency-stage">
+        <h3>🔵 After the Flood</h3>
+        <label><input type="checkbox"> Return home only when authorities say it is safe.</label>
+        <label><input type="checkbox"> Avoid contaminated water and damaged electrical systems.</label>
+        <label><input type="checkbox"> Use safe drinking water.</label>
+        <label><input type="checkbox"> Check on family members and vulnerable neighbors.</label>
+    </div>
+
+    <div class="emergency-contacts">
+        <h3>📞 Emergency Contacts – India</h3>
+        <p>Emergency Response</p>
+        <a href="tel:112">112 – Call Emergency Services</a>
+
+        <p>Tamil Nadu State Disaster Control Room</p>
+        <a href="tel:1070">1070 – State Helpline</a>
+
+        <p>District Disaster Helpline</p>
+        <a href="tel:1077">1077 – District Helpline</a>
+    </div>
+
+    <p class="note">
+        General preparedness guidance only. Follow official emergency alerts.
+    </p>
+
+</section>
+  updateEmergencyPlanner(data.prediction.flood_risk);
+
+
+        
 
         <!-- WHAT-IF SIMULATION -->
         <section class="panel" id="simulationPanel">

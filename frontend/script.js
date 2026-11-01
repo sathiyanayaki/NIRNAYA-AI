@@ -70,6 +70,8 @@ async function analyzeFlood() {
 
         document.getElementById("confidence").textContent =
             (data.prediction.confidence * 100).toFixed(1) + "%";
+            // Update Flood Emergency Action Planner
+updateEmergencyPlanner(data.prediction.flood_risk);
 
         // ----------------------------------
         // Geospatial Agent
@@ -454,3 +456,39 @@ function updateWaterChart(water) {
     });
 
 }
+
+function updateEmergencyPlanner(risk) {
+
+    const riskElement = document.getElementById("emergencyRisk");
+
+    if (!riskElement) return;
+
+    const level = String(risk || "").trim().toUpperCase();
+
+    if (level.includes("HIGH")) {
+        riskElement.innerHTML = `
+            <h3>🔴 HIGH FLOOD RISK</h3>
+            <p>Stay alert. Prepare your emergency kit and monitor official alerts.
+            Follow evacuation instructions from local authorities.</p>
+        `;
+    }
+    else if (level.includes("MEDIUM")) {
+        riskElement.innerHTML = `
+            <h3>🟠 MEDIUM FLOOD RISK</h3>
+            <p>Remain prepared. Monitor rainfall and water levels.
+            Keep essential items ready and check official alerts.</p>
+        `;
+    }
+    else if (level.includes("LOW")) {
+        riskElement.innerHTML = `
+            <h3>🟢 LOW FLOOD RISK</h3>
+            <p>Continue monitoring weather updates.
+            Keep your emergency supplies accessible.</p>
+        `;
+    }
+    else {
+        riskElement.textContent =
+            "Risk level unavailable. Complete flood analysis again.";
+    }
+}
+
