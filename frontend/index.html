@@ -1,0 +1,264 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NIRNAYA AI | Flood Intelligence</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div>
+            <h1>NIRNAYA <span>AI</span></h1>
+            <p>Multi-Agent Flood & Rainwater Intelligence</p>
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- INTRO -->
+        <section class="intro">
+            <h2>Disaster Decision Intelligence</h2>
+            <p>
+                Analyze flood vulnerability, optimize simulated routes,
+                and plan rainwater resources.
+            </p>
+        </section>
+
+        <!-- FLOOD INPUT -->
+        <section class="panel">
+
+            <h2>Flood Risk Assessment</h2>
+
+            <div class="input-grid">
+
+                <div class="field">
+                    <label>Rainfall (mm)</label>
+                    <input type="number" id="rainfall" value="150" min="0" max="500">
+                </div>
+
+                <div class="field">
+                    <label>Water Level (cm)</label>
+                    <input type="number" id="waterLevel" value="120" min="0" max="500">
+                </div>
+
+                <div class="field">
+                    <label>Drainage Capacity (%)</label>
+                    <input type="number" id="drainage" value="20" min="0" max="100">
+                </div>
+
+                <div class="field">
+                    <label>Elevation (m)</label>
+                    <input type="number" id="elevation" value="5" min="0" max="500">
+                </div>
+
+                <div class="field">
+                    <label>Previous Flooding</label>
+                    <select id="previousFlooding">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button id="analyzeBtn" onclick="analyzeFlood()">
+                Analyze Flood Risk
+            </button>
+
+            <p id="loading" class="loading hidden">
+                Analyzing with five agents...
+            </p>
+
+            <p id="error" class="error"></p>
+
+        </section>
+
+        <!-- INTELLIGENCE RESULTS -->
+        <section id="results" class="hidden">
+
+            <h2 class="section-heading">Intelligence Dashboard</h2>
+
+            <!-- RESULT CARDS -->
+            <div class="result-grid">
+
+                <div class="result-card">
+                    <p>Flood Risk</p>
+                    <h2 id="floodRisk">--</h2>
+                </div>
+
+                <div class="result-card">
+                    <p>Model Confidence</p>
+                    <h2 id="confidence">--</h2>
+                </div>
+
+                <div class="result-card">
+                    <p>Location Vulnerability</p>
+                    <h2 id="vulnerability">--</h2>
+                </div>
+
+                <div class="result-card">
+                    <p>Vulnerability Score</p>
+                    <h2 id="vulnerabilityScore">--</h2>
+                </div>
+
+            </div>
+
+            <!-- ROUTE -->
+            <div class="panel">
+
+                <h2>Route Optimization</h2>
+
+                <p>Recommended simulated route:</p>
+
+                <h3 id="route">--</h3>
+
+                <p id="routeCost"></p>
+
+            </div>
+
+            <!-- RAINWATER MANAGEMENT -->
+            <div class="panel">
+
+                <h2>Rainwater Resource Management</h2>
+
+                <div class="water-grid">
+
+                    <div>
+                        <span>Collectable Water</span>
+                        <strong id="collectable">--</strong>
+                    </div>
+
+                    <div>
+                        <span>Stored Water</span>
+                        <strong id="stored">--</strong>
+                    </div>
+
+                    <div>
+                        <span>Domestic Allocation</span>
+                        <strong id="domestic">--</strong>
+                    </div>
+
+                    <div>
+                        <span>Groundwater Recharge</span>
+                        <strong id="recharge">--</strong>
+                    </div>
+
+                    <div>
+                        <span>Remaining Overflow</span>
+                        <strong id="overflow">--</strong>
+                    </div>
+
+                    <div>
+                        <span>Remaining Storage</span>
+                        <strong id="remaining">--</strong>
+                    </div>
+
+                </div>
+
+                <p class="note">
+                    Prototype estimates use assumed catchment, storage
+                    and recharge parameters. Water quality and site
+                    suitability must be verified before actual use.
+                </p>
+
+            </div>
+
+            <!-- WATER CHART -->
+            <div class="panel">
+
+                <h2>Rainwater Distribution Analytics</h2>
+
+                <p>Visual breakdown of collected and allocated rainwater.</p>
+
+                <div class="chart-container">
+                    <canvas id="waterChart"></canvas>
+                </div>
+
+            </div>
+
+            <!-- DECISION AUDITOR -->
+            <div class="panel">
+
+                <h2>Decision Auditor</h2>
+
+                <h3 id="auditStatus">--</h3>
+
+                <h3>Warnings</h3>
+                <ul id="warnings"></ul>
+
+                <h3>Recommendations</h3>
+                <ul id="recommendations"></ul>
+
+            </div>
+
+            <!-- FINAL DECISION -->
+            <div class="decision">
+
+                <p>FINAL SYSTEM DECISION</p>
+
+                <h2 id="finalDecision">--</h2>
+
+            </div>
+
+        </section>
+
+        <!-- WHAT-IF SIMULATION -->
+        <section class="panel" id="simulationPanel">
+
+            <h2>What-if Flood Simulation</h2>
+
+            <p>
+                Compare flood outcomes under different rainfall scenarios.
+            </p>
+
+            <button id="simulateBtn" onclick="runSimulation()">
+                Run Scenario Simulation
+            </button>
+
+            <p id="simulationLoading" class="loading hidden">
+                Comparing rainfall scenarios...
+            </p>
+
+            <p id="simulationError" class="error"></p>
+
+            <div id="simulationResults" class="hidden">
+
+                <div class="simulation-grid" id="scenarioCards"></div>
+
+                <p class="note">
+                    These are prototype scenario estimates,
+                    not real-time flood forecasts.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            NIRNAYA AI | Explainable Multi-Agent Decision Support Prototype
+        </footer>
+
+    </main>
+
+    <!-- LOAD CHART.JS FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- LOAD OUR JAVASCRIPT SECOND -->
+    <script src="script.js"></script>
+
+</body>
+</html>
