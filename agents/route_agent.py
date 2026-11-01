@@ -4,9 +4,24 @@ import networkx as nx
 
 class RouteOptimizationAgent:
 
-    def run(self, flood_risk):
+    def run(self, flood_risk, safety_weight=None, max_alternatives=3):
 
-        # Create a sample road network
+        # STEP 1: Validate inputs
+        flood_risk = float(flood_risk)
+
+        if flood_risk < 0:
+            raise ValueError("Flood risk cannot be negative")
+
+        if max_alternatives < 1:
+            raise ValueError("At least one route must be requested")
+
+        if safety_weight is None:
+            safety_weight = flood_risk
+
+        if safety_weight < 0:
+            raise ValueError("Safety weight cannot be negative")
+
+        # STEP 2: Create simulated road network
         road_network = nx.Graph()
 
         roads = [
@@ -20,41 +35,76 @@ class RouteOptimizationAgent:
             ("E", "F", 2, 2)
         ]
 
-        # Add roads with distance and flood risk
         for start, end, distance, risk in roads:
+
+            # Dynamic risk increases with overall flood risk
+            adjusted_risk = risk * flood_risk
+
+            route_cost = (
+                distance + adjusted_risk * safety_weight
+            )
 
             road_network.add_edge(
                 start,
                 end,
                 distance=distance,
-                risk=risk
+                risk=adjusted_risk,
+                cost=route_cost
             )
 
-        # Calculate combined route cost
-        for u, v, data in road_network.edges(data=True):
+        # STEP 3: Generate alternative routes
+        try:
+            paths = list(
+                nx.shortest_simple_paths(
+                    road_network,
+                    source="A",
+                    target="F",
+                    weight="cost"
+                )
+            )[:max_alternatives]
 
-            data["cost"] = (
-                data["distance"] + data["risk"] * flood_risk
-            )
+        except nx.NetworkXNoPath:
+            return {
+                "agent": "Route Optimization Agent",
+                "recommended_route": [],
+                "total_route_cost": None,
+                "alternative_routes": [],
+                "reason": "No available route"
+            }
 
-        # Find safest route from A to F
-        route = nx.shortest_path(
-            road_network,
-            source="A",
-            target="F",
-            weight="cost"
-        )
+        # STEP 4: Calculate route details
+        route_details = []
 
-        total_cost = nx.shortest_path_length(
-            road_network,
-            source="A",
-            target="F",
-            weight="cost"
-        )
+        for path in paths:
+
+            total_distance = 0
+            total_risk = 0
+            total_cost = 0
+
+            for i in range(len(path) - 1):
+
+                edge = road_network[path[i]][path[i + 1]]
+
+                total_distance += edge["distance"]
+                total_risk += edge["risk"]
+                total_cost += edge["cost"]
+
+            route_details.append({
+                "route": path,
+                "distance": total_distance,
+                "risk_score": round(total_risk, 2),
+                "total_cost": round(total_cost, 2)
+            })
+
+        # STEP 5: Return best route and alternatives
+        best_route = route_details[0]
 
         return {
             "agent": "Route Optimization Agent",
-            "recommended_route": route,
-            "total_route_cost": round(total_cost, 2),
-            "reason": "Selected the route with the lowest distance-risk cost"
+            "recommended_route": best_route["route"],
+            "total_route_cost": best_route["total_cost"],
+            "distance": best_route["distance"],
+            "risk_score": best_route["risk_score"],
+            "alternative_routes": route_details[1:],
+            "reason": "Selected the route with the lowest combined distance and flood-risk cost"
         }

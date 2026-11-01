@@ -1,4 +1,4 @@
- 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +8,15 @@
 
     <title>NIRNAYA AI | Flood Intelligence</title>
 
+    <!-- Main CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="map.css">
+
+    <!-- Leaflet Map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 </head>
 
 <body>
@@ -37,6 +45,27 @@
             </p>
         </section>
 
+        <!-- AREA SELECTION -->
+        <div class="input-group">
+
+            <label for="areaSelect">Select Chennai Area</label>
+
+            <select id="areaSelect">
+                <option value="T Nagar" selected>T. Nagar</option>
+                <option value="Guindy">Guindy</option>
+                <option value="Velachery">Velachery</option>
+                <option value="Adyar">Adyar</option>
+                <option value="Saidapet">Saidapet</option>
+            </select>
+
+            <p class="info-note">
+                Demo mode: Area selection changes the map location.
+                Flood predictions use manually entered values,
+                not live area data.
+            </p>
+
+        </div>
+
         <!-- FLOOD INPUT -->
         <section class="panel">
 
@@ -45,27 +74,54 @@
             <div class="input-grid">
 
                 <div class="field">
-                    <label>Rainfall (mm)</label>
-                    <input type="number" id="rainfall" value="150" min="0" max="500">
+                    <label for="rainfall">Rainfall (mm)</label>
+                    <input
+                        type="number"
+                        id="rainfall"
+                        value="150"
+                        min="0"
+                        max="500"
+                    >
                 </div>
 
                 <div class="field">
-                    <label>Water Level (cm)</label>
-                    <input type="number" id="waterLevel" value="120" min="0" max="500">
+                    <label for="waterLevel">Water Level (cm)</label>
+                    <input
+                        type="number"
+                        id="waterLevel"
+                        value="120"
+                        min="0"
+                        max="500"
+                    >
                 </div>
 
                 <div class="field">
-                    <label>Drainage Capacity (%)</label>
-                    <input type="number" id="drainage" value="20" min="0" max="100">
+                    <label for="drainage">Drainage Capacity (%)</label>
+                    <input
+                        type="number"
+                        id="drainage"
+                        value="20"
+                        min="0"
+                        max="100"
+                    >
                 </div>
 
                 <div class="field">
-                    <label>Elevation (m)</label>
-                    <input type="number" id="elevation" value="5" min="0" max="500">
+                    <label for="elevation">Elevation (m)</label>
+                    <input
+                        type="number"
+                        id="elevation"
+                        value="5"
+                        min="0"
+                        max="500"
+                    >
                 </div>
 
                 <div class="field">
-                    <label>Previous Flooding</label>
+                    <label for="previousFlooding">
+                        Previous Flooding
+                    </label>
+
                     <select id="previousFlooding">
                         <option value="1">Yes</option>
                         <option value="0">No</option>
@@ -86,10 +142,12 @@
 
         </section>
 
-        <!-- INTELLIGENCE RESULTS -->
+        <!-- RESULTS -->
         <section id="results" class="hidden">
 
-            <h2 class="section-heading">Intelligence Dashboard</h2>
+            <h2 class="section-heading">
+                Intelligence Dashboard
+            </h2>
 
             <!-- RESULT CARDS -->
             <div class="result-grid">
@@ -116,7 +174,76 @@
 
             </div>
 
-            <!-- ROUTE -->
+            <!-- CHENNAI MAP -->
+            <div class="panel">
+
+                <h2>Chennai Flood Intelligence Map</h2>
+
+                <p>
+                    Interactive visualization of illustrative
+                    flood-risk locations and simulated routes.
+                </p>
+
+                <!-- MAP LEGEND -->
+                <div class="map-legend">
+
+                    <span>
+                        <i class="legend-dot low"></i>
+                        Low Risk
+                    </span>
+
+                    <span>
+                        <i class="legend-dot medium"></i>
+                        Medium Risk
+                    </span>
+
+                    <span>
+                        <i class="legend-dot high"></i>
+                        High Risk
+                    </span>
+
+                    <span>
+                        <i class="legend-line recommended"></i>
+                        Recommended
+                    </span>
+
+                    <span>
+                        <i class="legend-line alternative"></i>
+                        Alternative
+                    </span>
+
+                </div>
+
+                <!-- MAP CONTAINER -->
+                <div id="floodMap"></div>
+
+                <!-- MAP ROUTE DETAILS -->
+                <div class="map-details">
+
+                    <h3>Route Analysis</h3>
+
+                    <p id="mapRecommendedRoute">
+                        Waiting for analysis...
+                    </p>
+
+                    <div id="agentStatusPanel">
+                        Waiting for analysis...
+                    </div>
+
+                    <div id="mapAlternativeRoutes"></div>
+
+                </div>
+
+                <p class="note">
+                    Map locations and road connections are
+                    illustrative prototype data. They are not
+                    verified flood zones, actual road directions,
+                    or safe evacuation routes.
+                </p>
+
+            </div>
+
+            <!-- ROUTE OPTIMIZATION -->
             <div class="panel">
 
                 <h2>Route Optimization</h2>
@@ -169,9 +296,10 @@
                 </div>
 
                 <p class="note">
-                    Prototype estimates use assumed catchment, storage
-                    and recharge parameters. Water quality and site
-                    suitability must be verified before actual use.
+                    Prototype estimates use assumed catchment,
+                    storage and recharge parameters. Water quality
+                    and site suitability must be verified before
+                    actual use.
                 </p>
 
             </div>
@@ -181,7 +309,10 @@
 
                 <h2>Rainwater Distribution Analytics</h2>
 
-                <p>Visual breakdown of collected and allocated rainwater.</p>
+                <p>
+                    Visual breakdown of collected and allocated
+                    rainwater.
+                </p>
 
                 <div class="chart-container">
                     <canvas id="waterChart"></canvas>
@@ -204,6 +335,17 @@
 
             </div>
 
+            <!-- AGENT EXECUTION MONITORING -->
+            <div class="panel">
+
+                <h2>Agent Execution Monitoring</h2>
+
+                <div id="agentExecutionStatusPanel">
+                    Waiting for analysis...
+                </div>
+
+            </div>
+
             <!-- FINAL DECISION -->
             <div class="decision">
 
@@ -221,10 +363,14 @@
             <h2>What-if Flood Simulation</h2>
 
             <p>
-                Compare flood outcomes under different rainfall scenarios.
+                Compare flood outcomes under different
+                rainfall scenarios.
             </p>
 
-            <button id="simulateBtn" onclick="runSimulation()">
+            <button
+                id="simulateBtn"
+                onclick="runSimulation()"
+            >
                 Run Scenario Simulation
             </button>
 
@@ -236,7 +382,10 @@
 
             <div id="simulationResults" class="hidden">
 
-                <div class="simulation-grid" id="scenarioCards"></div>
+                <div
+                    class="simulation-grid"
+                    id="scenarioCards"
+                ></div>
 
                 <p class="note">
                     These are prototype scenario estimates,
@@ -249,16 +398,23 @@
 
         <!-- FOOTER -->
         <footer>
-            NIRNAYA AI | Explainable Multi-Agent Decision Support Prototype
+            NIRNAYA AI |
+            Explainable Multi-Agent Decision Support Prototype
         </footer>
 
     </main>
 
-    <!-- LOAD CHART.JS FIRST -->
+    <!-- CHART.JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- LOAD OUR JAVASCRIPT SECOND -->
+    <!-- LEAFLET MAP LIBRARY -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- MAIN APPLICATION -->
     <script src="script.js"></script>
+
+    <!-- MAP FUNCTIONALITY -->
+    <script src="map.js"></script>
 
 </body>
 </html>

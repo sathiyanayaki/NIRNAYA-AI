@@ -14,6 +14,8 @@ async function analyzeFlood() {
 
     error.textContent = "";
     results.classList.add("hidden");
+    // Send analysis results to the Chennai map
+ 
 
     const floodData = {
         rainfall_mm: Number(document.getElementById("rainfall").value),
@@ -136,6 +138,12 @@ async function analyzeFlood() {
             data.final_decision.replaceAll("_", " ");
 
         results.classList.remove("hidden");
+        // Send completed analysis data to the Chennai map
+window.dispatchEvent(
+    new CustomEvent("nirnaya-analysis-complete", {
+        detail: data
+    })
+);
 
     } catch (err) {
 

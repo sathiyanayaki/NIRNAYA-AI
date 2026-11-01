@@ -1,4 +1,8 @@
-
+from sklearn.model_selection import (
+    train_test_split,
+    StratifiedKFold,
+    cross_val_score
+)
 import pandas as pd
 import joblib
 
@@ -38,6 +42,26 @@ model = RandomForestClassifier(
     max_depth=10,
     random_state=42
 )
+# STEP 5: Stratified 5-Fold Cross Validation
+
+cv = StratifiedKFold(
+    n_splits=5,
+    shuffle=True,
+    random_state=42
+)
+
+cv_scores = cross_val_score(
+    model,
+    X_train,
+    y_train,
+    cv=cv,
+    scoring="f1_macro"
+)
+
+print("\n========== CROSS VALIDATION ==========")
+print("F1 Scores:", cv_scores)
+print(f"Mean F1 Score: {cv_scores.mean():.4f}")
+print(f"Standard Deviation: {cv_scores.std():.4f}")
 
 # STEP 5: Train the model
 print("\nTraining Random Forest...")
